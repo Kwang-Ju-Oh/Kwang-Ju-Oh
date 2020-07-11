@@ -1,0 +1,33 @@
+print("Process Size must be less than 1000. Please input size of blocks and processes in the block,process list in Memory Management.py")      
+      
+block=[100,200,300,400,500]
+process=[255,444,109,437]
+a=len(block)
+b=len(process)
+def MemoryAllocation(block,a,process,b):
+    allocate=[-1]*b
+
+    for i in range(b):
+        best=-1
+        for j in range(a):
+            if block[j]>=process[i]:
+                if best==-1:
+                    best=j
+                elif block[best]>block[j]:
+                    best=j
+        if best!=-1:
+            allocate[i]=best
+            block[best]-=process[i]
+
+    print("Process#--ProcessSize--Block# ")
+    
+    for i in range(b):
+        print(i+1, "          ", process[i],"    ", end="   ")
+        if allocate[i]!=-1:
+            print(allocate[i]+1)
+        else:
+            print("Free")
+
+
+MemoryAllocation(block,a,process,b)
+
