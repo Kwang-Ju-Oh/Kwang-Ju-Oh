@@ -1,0 +1,47 @@
+def Safety_Algorithm():
+    processes=int(input("2에서 10사이의 process의 개수: "))
+    resources=int(input("2에서 5까지의 resource의 개수: "))
+    max_resource=[int(i) for i in input("최대 resources: ").split()]
+    
+    print("\n 각 프로세스에 할당된 자원")
+    recent_allocated=[[int(i) for i in input(f"process{j+1}: ").split()] for j in range(processes)]
+
+    print("\n 각 프로세스의 최대 자원")
+    max_use=[[int(i) for i in input(f"process{j+1}: ").split()] for j in range(processes)]
+
+    allocated=[0]*resources
+    for i in range(processes):
+        for j in range(resources):
+            allocated[j]+=recent_allocated[i][j]
+    print(f"\n 총 할당된 자원:{allocated}")
+
+    usable=[max_resource[i]-allocated[i] for i in range(resources)]
+    print(f"total usable resources:{usable}\n")
+
+    action=[True]*processes
+    count=processes
+    while count != 0:
+        safe = False
+        for i in range(processes):
+            if action[i]:
+                running = True
+                for j in range(resources):
+                    if max_use[i][j] - recent_allocated[i][j] > usable[j]:
+                        running = False
+                        break
+                if running:
+                    print(f"process{i+1} is running")
+                    action[i] = False
+                    count -= 1
+                    safe = True
+                    for j in range(resources):
+                        usable[j] += recent_allocated[i][j]
+                    break
+        if not safe:
+            print("unsafe state")
+            break
+
+        print(f"Process is safe state. usable resource: {usable}")
+
+Safety_Algorithm()
+    
